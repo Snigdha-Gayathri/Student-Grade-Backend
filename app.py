@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import pickle
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 # Load the trained model
 model = pickle.load(open("model.pkl", "rb"))
@@ -21,7 +23,7 @@ def predict():
     # Model expects a 2D array
     prediction = model.predict([[studytime, absences, failures]])[0]
 
-    return jsonify({"grade": str(prediction)})
+    return jsonify({"prediction": str(prediction)})
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
